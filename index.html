@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поздравление с Днем Рождения!</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            color: white;
+            text-align: center;
+            margin: 50px;
+            background-color: #000000; /* Черный цвет фона */
+        }
+
+        h1 {
+            color: #ff6347; /* Красный цвет текста */
+        }
+
+        img {
+            cursor: pointer;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        /* Стили для кнопок */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff6347; /* Красный цвет кнопок */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e05239; /* Темно-красный цвет при наведении */
+        }
+
+        /* Стили для модального окна */
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        #myModalContent {
+            background-color: #000; /* Черный цвет фона модального окна */
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #333; /* Темно-серый цвет рамки */
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Тень белого цвета */
+            text-align: left;
+            color: #fff;
+        }
+
+        /* Закрытие модального окна кнопкой */
+        #closeModal {
+            color: #999; /* Серый цвет текста */
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #closeModal:hover,
+        #closeModal:focus {
+            color: #555; /* Темно-серый цвет при наведении */
+            text-decoration: none;
+        }
+
+        /* Анимации */
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* Анимация салюта слева */
+        @keyframes saluteLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Анимация салюта справа */
+        @keyframes saluteRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Контейнер для салюта слева */
+        #leftSalute {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            animation: saluteLeft 1s forwards;
+        }
+
+        /* Контейнер для салюта справа */
+        #rightSalute {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            animation: saluteRight 1s forwards;
+        }
+        
+        /* Стили для описания гифок */
+        .description {
+            background-color: #333; /* Темно-серый цвет фона */
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* Стили для пиксельного текста */
+        .pixel-text {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <img src="chpic.su_-_ValentinkaMafNyasticks_016.png" alt="Описание изображения" width="200" height="300">
+    <h1 >🎉Привет, Биминик!🎉</h1>
+   
+    
+    <!-- Первая гифка (не кликабельная) -->
+    <div class="description pixel-text">Эту гифку, я делал как подарок на день рождения, да она конечно не супер, но как умею так и сделал, надеюсь тебе понравится, а дальше по кнопочке продолжить )</div>
+    <img src="Sprite-0002-export.gif" alt="Гифка 1" width="600px" height="500px">
+    <br>
+    <!-- Кнопка "Продолжить" -->
+    <button id="continueButton" class="pixel-text">Продолжить</button>
+
+    <!-- Вторая гифка (кликабельная) и кнопка для открытия модального окна -->
+    <div id="secondGifContainer" style="display:none; margin-top: 20px;">
+        <div class="description pixel-text">Похоже тебе пришло письмо, тыкай на изображение ниже с:</div>
+        <img id="emailButton" src="Sprite-0001-export.gif" alt="Гифка 2" width="400" height="400">
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="myModal">
+        <div id="myModalContent">
+            <span id="closeModal" class="pixel-text">&times;</span>
+            <p id="modalText" class="pixel-text"></p>
+            <button id="celebrateButton" class="pixel-text">Просто нажми (ТЫК)</button>
+        </div>
+    </div>
+
+    <!-- Контейнеры для салюта -->
+    <div id="leftSalute"><img src="fireworks.gif" alt="Салют слева" width="100%" height="100%"></div>
+    <div id="rightSalute"><img src="19a2b200f8ac6186aa63a683f0520dc4.gif" alt="Салют справа" width="100%" height="100%"></div>
+
+    <script>
+        // Получаем элементы модального окна и кнопки закрытия
+        var modal = document.getElementById('myModal');
+        var modalContent = document.getElementById('myModalContent');
+        var closeModal = document.getElementById('closeModal');
+        var leftSalute = document.getElementById('leftSalute');
+        var rightSalute = document.getElementById('rightSalute');
+        var celebrateButton = document.getElementById('celebrateButton');
+
+        // Обработчик события клика на кнопку "Продолжить"
+        document.getElementById('continueButton').addEventListener('click', function() {
+            // Показываем контейнер с второй гифкой и кнопкой
+            document.getElementById('secondGifContainer').style.display = 'block';
+        });
+
+        // Обработчик события клика на вторую гифку
+        document.getElementById('emailButton').addEventListener('click', function() {
+            // Открывает модальное окно с анимацией
+            modal.style.display = 'block';
+            modalContent.style.animation = 'fadein 0.8s';
+
+            // Симулируем печать текста с задержкой
+            var text = "Пупс, поздравляю тебя с Днем Рождения!💫 Пусть этот день принесет тебе много радости, смеха и сюрпризов. Пусть сбудутся все твои заветные мечты. Надеюсь, что это поздравление, улучшило твое настроение, потому что пишу это 3 числа и сейчас ты грустик, так что вздобрись и не падай духом, ты самая лучшая!✨";
+            var modalText = document.getElementById('modalText');
+            modalText.innerHTML = ''; // Очищаем текст
+
+            
+            function typeWriter(i) {
+                if (i < text.length) {
+                    modalText.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(function() {
+                        typeWriter(i);
+                    }, 35); // Задержка между символами
+                }
+            }
+
+            typeWriter(0);
+        });
+
+        // Обработчик события клика на кнопку закрытия
+        closeModal.onclick = function() {
+            // Закрывает модальное окно с анимацией
+            modalContent.style.animation = 'fadeout 0.8s';
+            setTimeout(function() {
+                modal.style.display = 'none';
+            }, 800);
+        };
+    
+
+        // Обработчик события клика на кнопку "Закрыть и запустить салют"
+        celebrateButton.onclick = function() {
+            // Закрывает модальное окно с анимацией
+            modalContent.style.animation = 'fadeout 0.8s';
+            setTimeout(function() {
+                modal.style.display = 'none';
+
+                // Показываем салют после закрытия письма
+                leftSalute.style.display = 'block';
+                rightSalute.style.display = 'block';
+            }, 800);
+        };
+
+        // Закрывает модальное окно при клике вне его
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modalContent.style.animation = 'fadeout 0.8s';
+                setTimeout(function() {
+                    modal.style.display = 'none';
+                }, 800);
+            }
+        };
+    </script>
+
+</body>
+</html>
